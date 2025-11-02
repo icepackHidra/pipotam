@@ -1,0 +1,26 @@
+#cloud-config
+hostname: ${hostname}   
+manage_etc_hosts: true
+
+users:
+  - name: ansible
+    gecos: ansible user
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users,adm
+    shell: /bin/bash
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCebcanNugNuVc3iLaKRrsNCT1HT4koszQUcY3m6pOv+Tx7seLopPVht0FvNtmUfSEbYEzZy2HjaVDyBy144eNekIVlA8w9N8NXp2YxzGIKc0ioRx/7LnTPVPct5hxKUAXdat827Iq0GU5QwNl/4iJjOvC+Zvb84Obqoqa3QroIr59JArgIG2uq41AsDy/fxFkz8Xmhz8vrw8N6IO2ogNPUBxzml7FVSPSp7PDEkm3LlDcpwYBTPu+5o5c4lNd50gesfOTlk7WnU+YBZxzm1/WMDsCYBns97U2Cz320XKoKihM1+UMNH4xo7kiD1fatPsSg0cJflFzg/clRD1KzacYB hidra@kagari
+  - name: hidra
+    gecos: hidra
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users,adm
+    shell: /bin/bash
+    ssh-authorized-keys: 
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmz7iNb7LHEi2ftlkoVeu7IEbAmVMFtWt8sgb6jPv3k capucineglardon@protonmail.com
+
+packages:
+  - python3
+  - python3-apt
+
+runcmd:
+  - [ sh, -c, "echo 'Done cloud-init' > /var/tmp/cloud-init-done" ]

@@ -1,0 +1,5 @@
+- name: Ensure admin accont password is set
+  ansible.windows.win_user:
+    name: Administrator
+    password: "{{ admin_password }}"
+    state: present

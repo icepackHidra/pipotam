@@ -1,0 +1,22 @@
+- name: preparation all windows 
+  hosts: WEB-capu
+  become: yes
+  become_method: runas
+  become_user: Administrator
+  gather_facts: true
+  tasks: 
+
+  - name: Check Tamper Protection
+    ansible.windows.win_powershell:
+      script: "(Get-MpComputerStatus).IsTamperProtected"
+    register: tp
+
+  - name: Disable real-time monitoring and related Defender features
+    debug:
+      msg: "Tamper Protection = {{ tp.output[0] | default('unknown') }}"
+
+  - name: Remove Windows Defender features (Server only)
+    ansible.windows.win_feature:
+      name:
+        - Windows-Defender
+      state: absent

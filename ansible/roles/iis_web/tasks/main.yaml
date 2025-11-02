@@ -1,0 +1,30 @@
+- name: Install IIS Management Features
+  win_feature:
+    name: Web-Mgmt-Tools, 
+          Web-Mgmt-Console, 
+          Web-Scripting-Tools, 
+          Web-Mgmt-Service
+    state: present
+
+- name: Install IIS Role
+  ansible.windows.win_feature:
+    name: Web-Server
+    state: present
+    include_sub_features: yes
+    include_management_tools: yes
+  register: win_feature_iis
+
+- name: Create directory
+  win_file:
+    path: C:\\inetpub
+    state: directory
+
+- name: Create directory
+  win_file:
+    path: C:\\inetpub\\wwwroot
+    state: directory
+
+- name: default-website-index (vulnerable file!!!!)
+  win_copy:
+    src: files/index.aspx
+    dest: "C:\\inetpub\\wwwroot\\index.aspx"

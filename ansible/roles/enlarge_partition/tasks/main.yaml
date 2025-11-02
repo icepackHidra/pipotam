@@ -1,0 +1,6 @@
+- name: Resize previously created partition to its maximum size
+  community.windows.win_partition:
+    drive_letter: C
+    partition_size: -1 #taille max possible
+    partition_number: 2
+    disk_number: 0

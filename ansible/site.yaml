@@ -1,0 +1,106 @@
+- name: preparation all windows 
+  hosts: windows
+  gather_facts: true
+  roles: 
+  - windows_common
+
+- name: delete unattend.xml file on windows hosts
+  hosts: windows:&server
+  gather_facts: false
+  roles:
+  - delete_unattend 
+
+- name: enlarge partition 2 disk0 on win servers 
+  hosts: windows:&server
+  gather_facts: false
+  roles:
+  - enlarge_partition
+
+- name: set administrator password
+  hosts: DC1-capu
+  roles:
+  - set_admin_pass
+  vars:
+    admin_password: "{{ domain_admin_password }}"
+  
+- name: setup active directory forest (pipotam.lab)
+  hosts: DC1-capu
+  gather_facts: false
+  roles:
+  - ad_forest
+  vars:
+    admin_password: "{{ domain_admin_password }}"
+    domain_name: "{{ ad_domain_name }}" 
+
+- name: promote DC1-capu as domain controller
+  hosts: DC1-capu
+  gather_facts: false
+  roles:
+  - dc_promote
+  vars: 
+    domain_name: "{{ ad_domain_name }}" 
+    admin_user: "{{ domain_admin_user }}"
+    admin_password: "{{ domain_admin_password }}"
+  
+- name: set dns on DC2-capu to point to DC1-capu
+  hosts: DC2-capu
+  gather_facts: false
+  roles:
+  - set_dns
+  vars:
+    servers: "{{ hostvars['DC1-capu'].ansible_host }}"
+
+- name: promote DC2-capu as domain controller
+  hosts: DC2-capu
+  gather_facts: false
+  roles:
+  - dc_promote
+  vars: 
+    domain_name: "{{ ad_domain_name }}" 
+    admin_user: "{{ domain_admin_user }}"
+    admin_password: "{{ domain_admin_password }}"
+  
+- name: setup adcs on DC2-capu
+  hosts: DC2-capu
+  gather_facts: false
+  roles:
+  - adcs
+  vars:
+    domain_username: "{{ domain_admin_user }}"
+    domain_password: "{{ domain_admin_password }}"
+    ca_common_name: "Pipotam-CA"
+    ca_web_enrollment: true
+
+- name: join windows hosts to the domain pipotam.lab
+  hosts: windows,!dc
+  gather_facts: false
+  roles:
+  - join_domain_windows
+  vars:
+    servers: "{{ hostvars['DC1-capu'].ansible_host }}"
+    domain_name: "{{ ad_domain_name }}" 
+    admin_user: "{{ domain_admin_user }}"
+    admin_password: "{{ domain_admin_password }}"
+
+- name: populate the active directory forest pipotam.lab
+  hosts: DC1-capu
+  gather_facts: false
+  roles:
+  - populate_forest
+  vars: 
+    domain_name: "{{ ad_domain_name }}"
+
+- name: disable windows defender on WEB-capu
+  hosts: WEB-capu
+  gather_facts: false
+  roles:
+  - defender_disable
+
+- name: setup iis web server on WEB-capu
+  hosts: WEB-capu
+  gather_facts: false
+  roles:
+  - iis_web
+
+
+

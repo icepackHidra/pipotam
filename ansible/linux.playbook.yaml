@@ -1,0 +1,6 @@
+- name: Example play
+  hosts: linux
+  remote_user: ansible
+  become: yes
+  become_method: sudo
+  

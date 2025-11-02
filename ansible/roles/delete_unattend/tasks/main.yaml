@@ -1,0 +1,4 @@
+- name: Remove unattend.xml file from Windows hosts
+  ansible.windows.win_file:
+    path: C:\Windows\Panther\Unattend\Unattend.xml
+    state: absent

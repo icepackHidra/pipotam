@@ -1,0 +1,28 @@
+plugin: community.general.proxmox
+url: https://192.168.1.15:8006
+user: 'terraform-prov@pve'
+token_id: 'terraform'
+token_secret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          63353636653363666136363139626135303533653231353430373461623063316637363264626433
+          6565323862626136353834383962663839353661666238390a636538383631303064623433313432
+          31643263316439323766356661313262636264666464656663666565353331366238636464353739
+          3064623936666463660a663235336535646261386161626633656635613139396534346666333337
+          63313462353532636339366533333765333131636134316432386635666533363830363964356332
+          3061316136366361363962616163336435306561363937376362
+validate_certs: false
+want_proxmox_nodes_ansible_host: false
+compose:
+  ansible_host: "proxmox_agent_interfaces[0]['ip-addresses'][0].split('/')[0] if 'windows' in (proxmox_tags_parsed|list) else proxmox_agent_interfaces[1]['ip-addresses'][0].split('/')[0]"
+want_facts: true
+keyed_groups:
+  - key: proxmox_tags_parsed
+    separator: ""
+groups:
+  linux: "'pipotam' in (proxmox_tags_parsed|list) and 'linux' in (proxmox_tags_parsed|list)" 
+  windows: "'pipotam' in (proxmox_tags_parsed|list) and 'windows' in (proxmox_tags_parsed|list)"
+  dc: "'pipotam' in (proxmox_tags_parsed|list) and 'dc' in (proxmox_tags_parsed|list)"
+  adcs: "'pipotam' in (proxmox_tags_parsed|list) and 'adcs' in (proxmox_tags_parsed|list)"
+  iis: "'pipotam' in (proxmox_tags_parsed|list) and 'iis' in (proxmox_tags_parsed|list)" 
+  client: "'pipotam' in (proxmox_tags_parsed|list) and 'client' in (proxmox_tags_parsed|list)"
+  server: "'pipotam' in (proxmox_tags_parsed|list) and 'server' in (proxmox_tags_parsed|list)"

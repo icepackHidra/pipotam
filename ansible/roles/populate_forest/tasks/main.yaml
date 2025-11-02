@@ -1,0 +1,28 @@
+- name: Ensure OU is present & protected
+  microsoft.ad.ou:
+    name: hippo
+    path: DC=pipotam,DC=lab
+    state: present
+    protect_from_deletion: true
+
+- name: Ensure user yolo is present in OU ou=hippo,dc=pipotam,dc=lab
+  microsoft.ad.user:
+    identity: yolopipo
+    password: vagrant123!
+    update_password: on_create
+    state: present
+    path: ou=hippo,dc=pipotam,dc=lab
+    groups:
+      set:
+        - Domain Users
+
+- name: Ensure user yeah is created in the root of the domain (without OU)
+  microsoft.ad.user:
+    identity: yeah
+    password: vagrant123!
+    update_password: on_create
+    state: present
+    path: dc=pipotam,dc=lab
+    groups:
+      set:
+        - Domain Users

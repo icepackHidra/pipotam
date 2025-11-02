@@ -1,0 +1,4 @@
+- name: mettre le DNS sur le bon adaptateur ethernet
+  ansible.windows.win_dns_client:
+    adapter_names: 'Ethernet*'
+    dns_servers: "{{ servers }}"
