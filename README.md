@@ -9,3 +9,9 @@ Ce projet a pour objectif de déployer et de configurer une infrastructure Windo
 - **DC1** : contrôleur de domaine principal sous **Windows Server 2022**.  
 - **DC2** : second contrôleur de domaine sous **Windows Server 2022**, configuré en réplication avec DC1 et hébergeant le rôle **Active Directory Certificate Services (AD CS)**.  
 - **Serveur Web** : serveur **Windows Server** configuré avec **IIS (Internet Information Services)**.
+
+
+
+## Références
+
+- *Game of Active Directory* – https://github.com/Orange-Cyberdefense/GOAD
