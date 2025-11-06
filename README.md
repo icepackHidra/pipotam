@@ -15,3 +15,4 @@ Ce projet a pour objectif de déployer et de configurer une infrastructure Windo
 ## Références
 
 - *Game of Active Directory* – https://github.com/Orange-Cyberdefense/GOAD
+- *Application ASPX vulnérable* - https://gist.github.com/stasinopoulos/95ce3d164fec1d477f80ea3675be2021 
