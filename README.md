@@ -1,4 +1,4 @@
-# Projet d’Infrastructure Automatisée avec Terraform et Ansible
+# Projet d’Infrastructure automatisée avec Terraform et Ansible
 
 Ce projet a pour objectif de déployer et de configurer une infrastructure Windows complète de manière automatisée, reproductible et scalable. L’ensemble du provisioning et de la configuration est réalisé à l’aide de **Terraform** et **Ansible**, garantissant une gestion standardisée des ressources.
 
